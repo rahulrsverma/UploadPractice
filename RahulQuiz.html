@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 400px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #question {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        #options button {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #options button:hover {
+            background-color: #45a049;
+        }
+
+        .score {
+            margin-top: 20px;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Game</h1>
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="next" onclick="nextQuestion()">Next</button>
+        <div class="score">
+            <p>Score: <span id="score">0</span></p>
+            <p>Questions Correct: <span id="correct-count">0</span></p>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "What is the capital of France?", options: ["Paris", "London", "Berlin", "Madrid"], answer: "Paris" },
+            { question: "What is 2 + 2?", options: ["3", "4", "5", "6"], answer: "4" },
+            { question: "What is the tallest mountain?", options: ["K2", "Everest", "Kangchenjunga", "Lhotse"], answer: "Everest" },
+            // Add more questions here (total 50)
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let correctCount = 0;
+
+        function loadQuestion() {
+            document.getElementById("result").textContent = "";
+            document.getElementById("question").textContent = questions[currentQuestion].question;
+
+            let options = questions[currentQuestion].options;
+            let optionsHtml = "";
+            options.forEach(option => {
+                optionsHtml += `<button onclick="checkAnswer('${option}')">${option}</button>`;
+            });
+            document.getElementById("options").innerHTML = optionsHtml;
+        }
+
+        function checkAnswer(selectedOption) {
+            if (selectedOption === questions[currentQuestion].answer) {
+                score++;
+                correctCount++;
+                document.getElementById("result").textContent = "Correct!";
+            } else {
+                score--;
+                document.getElementById("result").textContent = "Wrong!";
+            }
+
+            if (correctCount === 5) {
+                score += 2; // Bonus points for getting 5 correct
+                document.getElementById("result").textContent += " Bonus +2!";
+                correctCount = 0; // Reset the correct count for the next bonus
+            }
+
+            document.getElementById("score").textContent = score;
+            document.getElementById("correct-count").textContent = correctCount;
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion >= questions.length) {
+                document.getElementById("question").textContent = "Quiz Over!";
+                document.getElementById("options").innerHTML = "";
+                document.getElementById("next").disabled = true;
+                return;
+            }
+            loadQuestion();
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
